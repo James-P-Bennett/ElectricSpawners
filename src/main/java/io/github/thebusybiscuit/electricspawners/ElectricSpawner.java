@@ -5,6 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Mob;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
@@ -140,8 +141,16 @@ public class ElectricSpawner extends SimpleSlimefunItem<BlockTicker> implements 
         }
 
         removeCharge(b.getLocation(), getEnergyConsumption());
-        b.getWorld().spawnEntity(new Location(b.getWorld(), b.getX() + 0.5D, b.getY() + 1.5D, b.getZ() + 0.5D), this.entity);
+
+        Entity mob = b.getWorld().spawnEntity(new Location(b.getWorld(), b.getX() + 0.5D, b.getY() + 1.5D, b.getZ() + 0.5D), this.entity);
+
+        // Set the mob as unaware immediately after spawning
+        if (mob instanceof Mob) {
+            Mob unawareMob = (Mob) mob;
+            unawareMob.setAware(false); // Set the mob to be unaware
+        }
     }
+
 
     @Override
     public BlockTicker getItemHandler() {

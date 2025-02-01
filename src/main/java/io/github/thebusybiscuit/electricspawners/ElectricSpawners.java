@@ -33,11 +33,11 @@ public class ElectricSpawners extends JavaPlugin implements Listener, SlimefunAd
         boolean forceDisableAI = false;
         boolean defaultDisabledAI = false;
 
-        if (cfg.contains("options.mob-ai.force-disable")) {
-            forceDisableAI = cfg.getBoolean("options.mob-ai.force-disable");
+        if (cfg.contains("mob-ai.force-disable")) {
+            forceDisableAI = cfg.getBoolean("mob-ai.force-disable");
         }
-        if (cfg.contains("options.mob-ai.default-disabled")) {
-            defaultDisabledAI = cfg.getBoolean("options.mob-ai.default-disabled");
+        if (cfg.contains("mob-ai.default-disabled")) {
+            defaultDisabledAI = cfg.getBoolean("mob-ai.default-disabled");
         }
 
         ItemGroup itemGroup = new ItemGroup(new NamespacedKey(this, "electric_spawners"),

@@ -32,7 +32,6 @@ import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
 public class ElectricSpawner extends SimpleSlimefunItem<BlockTicker> implements EnergyNetComponent {
 
     private static final int ENERGY_CONSUMPTION = 240;
-    private static int lifetime = 0;
 
     private final EntityType entity;
     private final boolean forceDisableAI;
@@ -138,8 +137,13 @@ public class ElectricSpawner extends SimpleSlimefunItem<BlockTicker> implements 
         return ENERGY_CONSUMPTION;
     }
 
+    private static final long SPAWN_COOLDOWN_TICKS = 20L; // 1 second (20 ticks) This too fast?
+    private long lastSpawnTick = 0L;
+
     protected void tick(Block b) {
-        if (lifetime % 3 != 0) {
+        long currentTick = b.getWorld().getFullTime();
+
+        if (currentTick - lastSpawnTick < SPAWN_COOLDOWN_TICKS) {
             return;
         }
 
@@ -171,6 +175,7 @@ public class ElectricSpawner extends SimpleSlimefunItem<BlockTicker> implements 
                     BlockStorage.getLocationInfo(b.getLocation(), "disable_ai").equals("true");
             mob.setAware(!disableAI);
         }
+        lastSpawnTick = currentTick;
     }
 
     @Override
@@ -183,7 +188,6 @@ public class ElectricSpawner extends SimpleSlimefunItem<BlockTicker> implements 
 
             @Override
             public void uniqueTick() {
-                lifetime++;
             }
 
             @Override
